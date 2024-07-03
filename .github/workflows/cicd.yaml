@@ -1,4 +1,4 @@
-name: Deploy to Cloud Run through github
+name: Deploy to Cloud Run through GitHub
 
 env:
   SERVICE_NAME: ml-run-service
@@ -29,21 +29,26 @@ jobs:
 
       - name: Set up Cloud SDK
         uses: 'google-github-actions/setup-gcloud@v2'
+        with:
+          project_id: ${{ env.PROJECT_ID }}
 
       - name: Configure Docker
-        run: |
-          gcloud auth configure-docker asia-southeast1-docker.pkg.dev
+        run: gcloud auth configure-docker asia-southeast1-docker.pkg.dev
 
       - name: Build and Push Docker Image
         run: |
           docker build -t ${{ env.DOCKER_IMAGE_URL }}:latest -f Dockerfile.prod .
           docker push ${{ env.DOCKER_IMAGE_URL }}:latest
 
-      - name: Deploy to Cloud Run
-        run: |
-          echo SERVICE_NAME $SERVICE_NAME
-          gcloud run deploy $SERVICE_NAME \
-            --image ${{ env.DOCKER_IMAGE_URL }}:latest \
-            --platform managed \
-            --region asia-southeast1 \
-            --allow-unauthenticated
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        working-directory: terraform/
+        run: terraform init
+
+      - name: Terraform Apply
+        working-directory: terraform/
+        run: terraform apply -auto-approve
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: '${{ secrets.GCP_SA_KEY_MNIST }}'

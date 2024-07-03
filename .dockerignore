@@ -7,3 +7,8 @@ __pycache__
 .pytest_cache
 .idea
 test
+*.tfstate
+*.tfstate.*
+*.backup
+.terraform/
+.terraform.lock.hcl
