@@ -21,16 +21,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up Cloud SDK
-        uses: 'google-github-actions/setup-gcloud@v2'
-        with:
-          project_id: ${{ env.PROJECT_ID }}
-
       - name: Authenticate to Google Cloud
         id: auth
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: '${{ secrets.GCP_SA_KEY_MNIST }}'
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+      - name: Set up Cloud SDK
+        uses: 'google-github-actions/setup-gcloud@v2'
+        with:
+          project_id: ${{ env.PROJECT_ID }}
 
       - name: Configure Docker
         run: gcloud auth configure-docker asia-southeast1-docker.pkg.dev
@@ -40,11 +40,6 @@ jobs:
           docker build -t ${{ env.DOCKER_IMAGE_URL }}:latest -f Dockerfile.prod .
           docker push ${{ env.DOCKER_IMAGE_URL }}:latest
 
-      - name: Write GCP credentials to file
-        run: |
-          echo "${{ secrets.GCP_SA_KEY_MNIST }}" > $HOME/gcp-key.json
-        shell: bash
-
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
 
@@ -52,11 +47,11 @@ jobs:
         working-directory: terraform/
         run: terraform init
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: $HOME/gcp-key.json
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
 
       - name: Terraform Apply
         working-directory: terraform/
         run: terraform apply -auto-approve
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: $HOME/gcp-key.json
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
 
