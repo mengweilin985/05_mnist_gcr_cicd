@@ -1,4 +1,4 @@
-name: Deploy to Cloud Run test through GitHub Actions
+name: Deploy to Cloud Run through GitHub Actions
 
 on:
   push:
