@@ -1,5 +1,5 @@
 {
-    "name": "Python deploy-cloud-run test Devcontainer",
+    "name": "Python deploy-cloud-run Devcontainer",
     "build": {
       "dockerfile": "../Dockerfile.dev"
     },
