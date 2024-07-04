@@ -46,7 +46,7 @@ jobs:
             --image ${{ env.DOCKER_IMAGE_URL }}:latest \
             --platform managed \
             --region asia-southeast1 \
-            --allow-unauthenticated 
+            --allow-unauthenticated \
             --cpu=1 \
             --memory=2Gi
 
