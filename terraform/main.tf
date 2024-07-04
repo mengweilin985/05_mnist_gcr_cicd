@@ -21,6 +21,12 @@ resource "google_cloud_run_service" "default" {
     percent         = 100
     latest_revision = true
   }
+
+  lifecycle {
+    ignore_changes = [
+      template[0].spec[0].containers[0].image,
+    ]
+  }
 }
 
 resource "google_cloud_run_service_iam_member" "noauth" {
