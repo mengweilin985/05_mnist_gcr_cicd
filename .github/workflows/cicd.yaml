@@ -3,7 +3,7 @@ name: Deploy to Cloud Run fast api
 env:
   SERVICE_NAME: ml-run-service
   PROJECT_ID: ml-cloud-run-428007
-  DOCKER_IMAGE_URL: asia-southeast1-docker.pkg.dev/ml-cloud-run-428007/ml-run/ml-run
+  DOCKER_IMAGE_URL: asia-southeast1-docker.pkg.dev/ml-cloud-run-428007/ml-run-mnist/ml-run-mnist
 
 on:
   push:
