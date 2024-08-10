@@ -41,14 +41,6 @@ jobs:
 
       - name: Deploy to Cloud Run
         run: |
-          echo SERVICE_NAME $SERVICE_NAME
-          gcloud run deploy $SERVICE_NAME \
-            --image ${{ env.DOCKER_IMAGE_URL }}:latest \
+          gcloud run services replace service.yaml \
             --platform managed \
-            --region asia-southeast1 \
-            --allow-unauthenticated \
-            --cpu=1 \
-            --memory=2Gi
-
-
-
+            --region asia-southeast1
