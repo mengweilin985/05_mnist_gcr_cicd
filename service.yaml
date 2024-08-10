@@ -6,7 +6,7 @@ spec:
   template:
     spec:
       containers:
-        - image: asia-southeast1-docker.pkg.dev/ml-cloud-run-428007/ml-run/ml-run:latest
+        - image: asia-southeast1-docker.pkg.dev/ml-cloud-run-428007/ml-run-mnist/ml-run-mnist:latest
           env:
             - name: SERVICE_PORT
               value: "8080"
